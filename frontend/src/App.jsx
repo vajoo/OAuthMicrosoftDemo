@@ -39,11 +39,11 @@ function App() {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
     const urlToken = urlParams.get('token')
-    
-    if (urlToken && window.location.pathname === '/auth/success') {
+
+    if (urlToken && window.location.pathname === '/oauth/auth/success') {
       localStorage.setItem('auth_token', urlToken)
       setToken(urlToken)
-      window.history.replaceState({}, document.title, '/')
+      window.history.replaceState({}, document.title, '/oauth/')
     }
   }, [])
 
