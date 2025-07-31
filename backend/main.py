@@ -27,7 +27,8 @@ class UserInfo(BaseModel):
 app = FastAPI(
     title="Microsoft OAuth Demo",
     docs_url="/docs",
-    openapi_url="/openapi.json"
+    openapi_url="/api/openapi.json" if os.getenv("BACKEND_URL", "").startswith("https://") else "/openapi.json",
+    root_path="/api" if os.getenv("BACKEND_URL", "").startswith("https://") else ""
 )
 security = HTTPBearer()
 
