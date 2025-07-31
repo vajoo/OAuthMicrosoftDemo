@@ -23,12 +23,16 @@ class UserInfo(BaseModel):
     email: str
     name: str
 
+# Determine if we're in production
+is_production = os.getenv("BACKEND_URL", "").startswith("https://")
+root_path = "/api" if is_production else ""
+
 # App
 app = FastAPI(
     title="Microsoft OAuth Demo",
     docs_url="/docs",
-    openapi_url="/api/openapi.json" if os.getenv("BACKEND_URL", "").startswith("https://") else "/openapi.json",
-    root_path="/api" if os.getenv("BACKEND_URL", "").startswith("https://") else ""
+    openapi_url="/openapi.json",
+    root_path=root_path
 )
 security = HTTPBearer()
 
