@@ -7,9 +7,11 @@ RUN npm install
 
 COPY . .
 
-# Add this line to accept build argument
+# Add build arguments
 ARG VITE_API_BASE
+ARG VITE_BASE_PATH
 ENV VITE_API_BASE=$VITE_API_BASE
+ENV VITE_BASE_PATH=$VITE_BASE_PATH
 
 RUN npm run build
 
