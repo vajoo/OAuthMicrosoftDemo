@@ -24,7 +24,11 @@ class UserInfo(BaseModel):
     name: str
 
 # App
-app = FastAPI(title="Microsoft OAuth Demo")
+app = FastAPI(
+    title="Microsoft OAuth Demo",
+    docs_url="/docs",
+    openapi_url="/openapi.json"
+)
 security = HTTPBearer()
 
 # Get frontend URL from environment
