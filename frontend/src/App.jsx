@@ -40,10 +40,16 @@ function App() {
     const urlParams = new URLSearchParams(window.location.search)
     const urlToken = urlParams.get('token')
 
-    if (urlToken && window.location.pathname === '/oauth/auth/success') {
+    // Check for both local and production paths
+    const isAuthSuccess = window.location.pathname === '/auth/success' || 
+                         window.location.pathname === '/oauth/auth/success'
+    
+    if (urlToken && isAuthSuccess) {
       localStorage.setItem('auth_token', urlToken)
       setToken(urlToken)
-      window.history.replaceState({}, document.title, '/oauth/')
+      // Redirect to appropriate base path
+      const basePath = window.location.pathname.includes('/oauth/') ? '/oauth/' : '/'
+      window.history.replaceState({}, document.title, basePath)
     }
   }, [])
 
