@@ -27,9 +27,12 @@ class UserInfo(BaseModel):
 app = FastAPI(title="Microsoft OAuth Demo")
 security = HTTPBearer()
 
+# Get frontend URL from environment
+FRONTEND_URL = os.getenv("FRONTEND_URL", f"http://{os.getenv('FRONTEND_HOST', 'localhost')}:{os.getenv('FRONTEND_PORT', '3003')}")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3003"],
+    allow_origins=[FRONTEND_URL],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -38,7 +41,8 @@ app.add_middleware(
 # Config
 CLIENT_ID = os.getenv("MICROSOFT_CLIENT_ID")
 CLIENT_SECRET = os.getenv("MICROSOFT_CLIENT_SECRET")
-REDIRECT_URI = os.getenv("MICROSOFT_REDIRECT_URI", "http://localhost:8003/auth/callback")
+BACKEND_URL = os.getenv("BACKEND_URL", f"http://{os.getenv('BACKEND_HOST', 'localhost')}:{os.getenv('BACKEND_PORT', '8003')}")
+REDIRECT_URI = os.getenv("MICROSOFT_REDIRECT_URI", f"{BACKEND_URL}/auth/callback")
 AUTHORITY = "https://login.microsoftonline.com/organizations"
 JWT_SECRET = os.getenv("JWT_SECRET", "dev-secret-key")
 
@@ -133,7 +137,7 @@ async def callback(code: str = None, state: str = None, error: str = None):
     
     jwt_token = jwt.encode(jwt_payload, JWT_SECRET, algorithm="HS256")
     
-    return RedirectResponse(url=f"http://localhost:3003/auth/success?token={jwt_token}")
+    return RedirectResponse(url=f"{FRONTEND_URL}/auth/success?token={jwt_token}")
 
 @app.get("/auth/user", response_model=UserInfo)
 async def get_user(current_user: UserInfo = Depends(get_current_user)):
