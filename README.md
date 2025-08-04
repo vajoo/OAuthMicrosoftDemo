@@ -14,8 +14,16 @@ Minimal Microsoft OAuth implementation with FastAPI backend and React frontend.
 ### 2. Environment Setup
 ```bash
 cp .env.example .env
-# Edit .env with your Microsoft OAuth credentials
+# Edit .env with your Microsoft OAuth credentials and Azure SSO settings
 ```
+
+**Required Environment Variables:**
+- `MICROSOFT_CLIENT_ID` - Your Azure app client ID
+- `MICROSOFT_CLIENT_SECRET` - Your Azure app client secret
+- `AZURE_TENANT_ID` - Your Azure tenant ID (or "organizations" for multi-tenant)
+- `JWT_SECRET` - Secret key for JWT token signing
+- `ENABLE_GROUPS_CLAIM` - Set to "true" to fetch user groups
+- `ENABLE_ROLES_CLAIM` - Set to "true" to fetch user roles
 
 ### 3. Run
 ```bash
@@ -31,7 +39,9 @@ docker compose up --build
 
 **Backend (FastAPI)**
 - Microsoft OAuth with PKCE
-- JWT token generation
+- Azure SSO with enterprise features
+- JWT token management with refresh
+- User groups and roles integration
 - Protected routes
 - Swagger UI
 
@@ -56,6 +66,28 @@ docker compose up --build
 ├── docker-compose.yml   # Container orchestration
 └── .env.example         # Environment template
 ```
+
+## Enterprise SSO Features
+
+**Azure Active Directory Integration:**
+- Multi-tenant support (configurable via `AZURE_TENANT_ID`)
+- User groups retrieval from Azure AD
+- User roles and app role assignments
+- Enhanced JWT tokens with enterprise claims
+- Token refresh capabilities
+
+**Security Features:**
+- PKCE (Proof Key for Code Exchange) flow
+- Secure JWT token handling
+- Configurable group and role claims
+- Production-ready CORS configuration
+
+**API Endpoints:**
+- `GET /auth/login` - Initiate OAuth flow
+- `GET /auth/callback` - OAuth callback handler
+- `GET /auth/user` - Get current user info with groups/roles
+- `POST /auth/refresh` - Refresh JWT token
+- `GET /health` - Health check endpoint
 
 ## Development
 

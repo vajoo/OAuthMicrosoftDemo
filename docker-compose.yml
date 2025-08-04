@@ -10,6 +10,10 @@ services:
       - MICROSOFT_REDIRECT_URI=${MICROSOFT_REDIRECT_URI:-http://localhost:8003/auth/callback}
       - JWT_SECRET=${JWT_SECRET:-dev-secret-key}
       - BACKEND_URL=${BACKEND_URL:-http://localhost:8003}
+      - AZURE_TENANT_ID=${AZURE_TENANT_ID:-organizations}
+      - AZURE_TENANT_TYPE=${AZURE_TENANT_TYPE:-multi}
+      - ENABLE_GROUPS_CLAIM=${ENABLE_GROUPS_CLAIM:-false}
+      - ENABLE_ROLES_CLAIM=${ENABLE_ROLES_CLAIM:-false}
     env_file:
       - .env
     restart: unless-stopped
